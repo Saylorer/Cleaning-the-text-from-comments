@@ -1,0 +1,17 @@
+import re
+
+text = ''   # Future clear text
+one_line_comment = r'#.*?\n'
+comment_with_two_spaces = r' +#.*?\n'
+doc = r' *""".*?"""\n'
+
+for line in open(0):
+    if re.match(comment_with_two_spaces, line):
+        text += re.sub(comment_with_two_spaces, '', line)
+        continue
+    text += line
+
+text = re.sub(comment_with_two_spaces, '\n', text, flags=re.M)
+text = re.sub(one_line_comment, '', text)
+text = re.sub(doc, '', text, flags=re.M | re.S)
+print(text)
